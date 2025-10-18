@@ -4,6 +4,8 @@ Un bot Discord avancé pour lire de la musique YouTube dans les salons vocaux av
 
 ## ✨ Fonctionnalités
 
+- 🔄 **Mise à jour automatique de yt-dlp** - Vérifie et met à jour yt-dlp à chaque démarrage
+
 - 🎶 **Lecture de musiques depuis YouTube** - Supporte les URLs directes et les recherches par mots-clés
 - 📋 **File d'attente intelligente** - Gestion automatique de plusieurs musiques
 - 🎨 **Interface enrichie** - Affichage détaillé avec embed Discord et boutons interactifs

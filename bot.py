@@ -3,6 +3,8 @@ from discord.ext import commands
 import yt_dlp as youtube_dl
 import asyncio
 import os
+import subprocess
+import sys
 from datetime import timedelta
 
 # Configuration du bot
@@ -214,6 +216,32 @@ async def create_now_playing_embed(ctx, player, requester, player_manager):
     return embed
 
 
+def update_ytdlp():
+    """Vérifie et met à jour yt-dlp au démarrage"""
+    print("🔍 Vérification des mises à jour de yt-dlp...")
+    try:
+        # Essayer de mettre à jour yt-dlp
+        result = subprocess.run(
+            [sys.executable, "-m", "pip", "install", "--upgrade", "yt-dlp"],
+            capture_output=True,
+            text=True,
+            timeout=30
+        )
+        
+        if "Successfully installed" in result.stdout:
+            print("✅ yt-dlp a été mis à jour avec succès!")
+        elif "Requirement already satisfied" in result.stdout or "already up-to-date" in result.stdout:
+            print("✅ yt-dlp est déjà à jour")
+        else:
+            print("ℹ️ yt-dlp vérifié")
+            
+    except subprocess.TimeoutExpired:
+        print("⚠️ La mise à jour de yt-dlp a pris trop de temps, passage en mode normal")
+    except Exception as e:
+        print(f"⚠️ Erreur lors de la mise à jour de yt-dlp: {e}")
+        print("Le bot continuera avec la version actuelle")
+
+
 @bot.event
 async def on_ready():
     print(f'{bot.user} est connecté et prêt!')
@@ -422,5 +450,34 @@ if TOKEN is None:
     print("❌ ERREUR: La variable d'environnement DISCORD_BOT_TOKEN n'est pas définie!")
     print("Veuillez définir votre token Discord avec: export DISCORD_BOT_TOKEN='votre_token_ici'")
 else:
+    # Vérifier et mettre à jour yt-dlp avant de démarrer le bot
+    update_ytdlp()
+    print("\n🚀 Démarrage du bot...\n")
     bot.run(TOKEN)
+
+
+
+
+@bot.command(name='ytdlp', help='Affiche la version de yt-dlp')
+async def ytdlp_version(ctx):
+    """Affiche la version actuelle de yt-dlp"""
+    try:
+        import yt_dlp
+        version = yt_dlp.version.__version__
+        
+        embed = discord.Embed(
+            title="📦 yt-dlp Information",
+            color=discord.Color.blue()
+        )
+        embed.add_field(name="Version", value=f"`{version}`", inline=False)
+        embed.add_field(
+            name="Mise à jour",
+            value="yt-dlp est automatiquement mis à jour à chaque redémarrage du bot",
+            inline=False
+        )
+        embed.set_footer(text="Pour forcer une mise à jour, redémarrez le bot")
+        
+        await ctx.send(embed=embed)
+    except Exception as e:
+        await ctx.send(f"❌ Erreur lors de la récupération de la version: {str(e)}")
 
