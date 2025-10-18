@@ -1,14 +1,20 @@
 # 🎵 Bot Discord Musique
 
-Un bot Discord simple et efficace pour lire de la musique YouTube dans les salons vocaux.
+Un bot Discord avancé pour lire de la musique YouTube dans les salons vocaux avec une interface interactive enrichie.
 
 ## ✨ Fonctionnalités
 
-- 🎶 Lecture de musiques depuis YouTube (URL ou recherche)
-- 📋 File d'attente pour gérer plusieurs musiques
-- ⏸️ Contrôles de lecture (pause, reprise, skip, stop)
-- 🔊 Contrôle du volume
-- 🎯 Commandes simples et intuitives
+- 🎶 **Lecture de musiques depuis YouTube** - Supporte les URLs directes et les recherches par mots-clés
+- 📋 **File d'attente intelligente** - Gestion automatique de plusieurs musiques
+- 🎨 **Interface enrichie** - Affichage détaillé avec embed Discord et boutons interactifs
+- ⏱️ **Timer en temps réel** - Affichage de la durée de chaque musique
+- 👤 **Demandeur affiché** - Voir qui a demandé chaque musique
+- 🔊 **Salon vocal affiché** - Information sur le salon vocal connecté
+- ❤️ **Système de likes** - Les utilisateurs peuvent liker les musiques en cours
+- 🔄 **AutoPlay** - Lecture automatique continue (peut être activé/désactivé)
+- 🎮 **Contrôles interactifs** - Boutons Discord pour Resume, Skip, Stop, AutoPlay et Like
+- 🔊 **Contrôle du volume** - Ajustement de 0 à 100%
+- 🎯 **Commandes simples** - Préfixe `!` pour toutes les commandes
 
 ## 📋 Prérequis
 
@@ -21,8 +27,8 @@ Un bot Discord simple et efficace pour lire de la musique YouTube dans les salon
 ### 1. Cloner le dépôt
 
 ```bash
-git clone https://github.com/votre-username/discord-music-bot.git
-cd discord-music-bot
+git clone https://github.com/LHRICO78/discord-music-bot-yt.git
+cd discord-music-bot-yt
 ```
 
 ### 2. Installer les dépendances Python
@@ -62,8 +68,11 @@ brew install ffmpeg
 8. Sélectionnez les permissions suivantes:
    - Read Messages/View Channels
    - Send Messages
+   - Embed Links
+   - Attach Files
    - Connect
    - Speak
+   - Use Voice Activity
 9. Copiez l'URL générée et utilisez-la pour inviter le bot sur votre serveur
 
 ### 5. Configuration
@@ -83,11 +92,6 @@ set DISCORD_BOT_TOKEN=votre_token_ici
 **Windows (PowerShell):**
 ```powershell
 $env:DISCORD_BOT_TOKEN='votre_token_ici'
-```
-
-Ou créez un fichier `.env` (non recommandé pour la production):
-```
-DISCORD_BOT_TOKEN=votre_token_ici
 ```
 
 ## 🎮 Utilisation
@@ -111,14 +115,41 @@ python bot.py
 | `!leave` | Fait quitter le bot du salon vocal | `!leave` |
 | `!queue` | Affiche la file d'attente | `!queue` |
 | `!volume <0-100>` | Change le volume | `!volume 50` |
+| `!autoplay` | Active/désactive l'AutoPlay | `!autoplay` |
+| `!nowplaying` ou `!np` | Affiche la musique en cours | `!np` |
+
+### Boutons interactifs
+
+Lorsqu'une musique est en cours de lecture, un message enrichi s'affiche avec les boutons suivants:
+
+- **▶️ Resume** - Reprend la lecture si elle est en pause
+- **⏭️ Skip** - Passe à la musique suivante
+- **⏹️ Stop** - Arrête la lecture et vide la file d'attente
+- **🔄 AutoPlay** - Active/désactive la lecture automatique continue
+- **❤️ Like** - Like la musique en cours (toggle)
+
+### Affichage enrichi
+
+Chaque musique en cours affiche:
+- 🎵 **Titre de la musique** avec durée totale
+- 👤 **Demandeur** - L'utilisateur qui a demandé la musique
+- 🔊 **Salon vocal** - Le nom du salon vocal connecté
+- ❤️ **Nombre de likes** - Combien d'utilisateurs ont liké
+- 🔄 **Statut AutoPlay** - Si l'AutoPlay est activé ou non
+- 🖼️ **Miniature** - Image de la vidéo YouTube
+- 🔗 **Lien YouTube** - Lien direct vers la vidéo
 
 ## 📝 Exemple d'utilisation
 
 1. Rejoignez un salon vocal sur votre serveur Discord
 2. Tapez `!join` pour faire rejoindre le bot
 3. Tapez `!play despacito` pour jouer une musique
-4. Utilisez `!pause`, `!resume`, `!skip` pour contrôler la lecture
-5. Tapez `!leave` pour déconnecter le bot
+4. Un message enrichi s'affiche avec toutes les informations et les boutons de contrôle
+5. Cliquez sur **❤️ Like** pour liker la musique
+6. Cliquez sur **🔄 AutoPlay** pour activer la lecture continue
+7. Utilisez les boutons ou les commandes pour contrôler la lecture
+8. Tapez `!queue` pour voir les musiques en attente
+9. Tapez `!leave` pour déconnecter le bot
 
 ## 🛠️ Technologies utilisées
 
@@ -126,6 +157,7 @@ python bot.py
 - **yt-dlp** - Outil pour télécharger des vidéos depuis YouTube
 - **FFmpeg** - Outil de traitement multimédia pour l'audio
 - **PyNaCl** - Bibliothèque pour le support vocal
+- **Discord UI Components** - Boutons et embeds interactifs
 
 ## ⚠️ Notes importantes
 
@@ -133,6 +165,19 @@ python bot.py
 - Assurez-vous d'activer les intents nécessaires dans le Developer Portal
 - Ne partagez jamais votre token Discord publiquement
 - Le bot utilise le streaming pour éviter de télécharger les fichiers
+- Les boutons interactifs nécessitent discord.py version 2.0 ou supérieure
+- L'AutoPlay est une fonctionnalité de base (peut être améliorée avec une API de recommandations)
+
+## 🎨 Captures d'écran
+
+Le bot affiche un embed Discord enrichi avec:
+- Titre et durée de la musique
+- Miniature de la vidéo YouTube
+- Informations sur le demandeur
+- Salon vocal connecté
+- Nombre de likes
+- Statut AutoPlay
+- Boutons interactifs pour contrôler la lecture
 
 ## 🤝 Contribution
 
@@ -147,8 +192,18 @@ Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 - Si le bot ne se connecte pas, vérifiez que votre token est correct
 - Si l'audio ne fonctionne pas, assurez-vous que FFmpeg est installé et accessible dans le PATH
 - Si vous avez des erreurs avec YouTube, essayez de mettre à jour yt-dlp: `pip install --upgrade yt-dlp`
+- Les boutons peuvent ne pas fonctionner si discord.py n'est pas à jour
 
 ## 📞 Support
 
 Pour toute question ou problème, ouvrez une issue sur GitHub.
+
+## 🚀 Améliorations futures possibles
+
+- Intégration d'une API de recommandations pour l'AutoPlay
+- Sauvegarde des musiques likées dans une base de données
+- Playlists personnalisées par utilisateur
+- Égaliseur audio
+- Paroles des chansons
+- Historique de lecture
 
