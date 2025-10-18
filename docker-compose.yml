@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  discord-bot:
+    build: .
+    container_name: discord-music-bot
+    restart: unless-stopped
+    environment:
+      - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
+    volumes:
+      - ./:/app
+    network_mode: host
+

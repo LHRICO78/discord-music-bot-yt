@@ -24,6 +24,8 @@ Un bot Discord avancé pour lire de la musique YouTube dans les salons vocaux av
 
 ## 🚀 Installation
 
+> **💡 Pour exécuter le bot en arrière-plan et au démarrage automatique, consultez le [Guide de déploiement complet](DEPLOYMENT.md)**
+
 ### 1. Cloner le dépôt
 
 ```bash
