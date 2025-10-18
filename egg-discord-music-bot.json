@@ -1,0 +1,95 @@
+{
+    "_comment": "Discord Music Bot - Pterodactyl Egg",
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
+    "exported_at": "2025-10-18T00:00:00+00:00",
+    "name": "Discord Music Bot",
+    "author": "discord@bot.com",
+    "description": "Un bot Discord avanc\u00e9 pour lire de la musique YouTube dans les salons vocaux avec interface interactive enrichie, mise \u00e0 jour automatique de yt-dlp, syst\u00e8me de likes et AutoPlay.",
+    "features": [
+        "eula"
+    ],
+    "docker_images": {
+        "ghcr.io\/parkervcp\/yolks:python_3.11": "ghcr.io\/parkervcp\/yolks:python_3.11"
+    },
+    "file_denylist": [],
+    "startup": "if [[ -d .git ]] && [[ {{AUTO_UPDATE}} == \"1\" ]]; then git pull; fi; if [[ ! -f \/usr\/local\/bin\/ffmpeg ]]; then echo \"Installation de FFmpeg...\"; apt update && apt install -y ffmpeg; fi; python -m pip install --upgrade pip; python -m pip install -r requirements.txt; python -m pip install --upgrade yt-dlp; python bot.py",
+    "config": {
+        "files": "{}",
+        "startup": "{\r\n    \"done\": \"est connect\\u00e9 et pr\\u00eat\"\r\n}",
+        "logs": "{}",
+        "stop": "^C"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!\/bin\/bash\r\n# Discord Music Bot Installation Script\r\n\r\napt update\r\napt install -y git curl wget ffmpeg\r\n\r\ncd \/mnt\/server\r\n\r\nif [ \"${USER_UPLOAD}\" == \"true\" ] || [ \"${USER_UPLOAD}\" == \"1\" ]; then\r\n    echo -e \"Assuming user uploaded files...\"\r\n    if [ ! -f bot.py ]; then\r\n        echo -e \"bot.py not found, cloning from GitHub...\"\r\n        MODIFIED_GIT_REPO=$(echo ${GIT_ADDRESS} | sed 's\/https:\\\/\\\/\/\/g' | sed 's\/http:\\\/\\\/\/\/g')\r\n        if [ -z \"${USERNAME}\" ] && [ -z \"${ACCESS_TOKEN}\" ]; then\r\n            echo -e \"Cloning without credentials\"\r\n            git clone https:\/\/${MODIFIED_GIT_REPO} .\r\n        else\r\n            echo -e \"Cloning with credentials\"\r\n            git clone https:\/\/${USERNAME}:${ACCESS_TOKEN}@${MODIFIED_GIT_REPO} .\r\n        fi\r\n    fi\r\nelse\r\n    echo -e \"Cloning from GitHub repository...\"\r\n    MODIFIED_GIT_REPO=$(echo ${GIT_ADDRESS} | sed 's\/https:\\\/\\\/\/\/g' | sed 's\/http:\\\/\\\/\/\/g')\r\n    if [ -z \"${USERNAME}\" ] && [ -z \"${ACCESS_TOKEN}\" ]; then\r\n        echo -e \"Cloning without credentials\"\r\n        git clone https:\/\/${MODIFIED_GIT_REPO} .\r\n    else\r\n        echo -e \"Cloning with credentials\"\r\n        git clone https:\/\/${USERNAME}:${ACCESS_TOKEN}@${MODIFIED_GIT_REPO} .\r\n    fi\r\nfi\r\n\r\nif [ -f requirements.txt ]; then\r\n    echo -e \"Installing Python dependencies...\"\r\n    python3 -m pip install --upgrade pip\r\n    python3 -m pip install -r requirements.txt\r\n    python3 -m pip install --upgrade yt-dlp\r\n    echo -e \"Dependencies installed successfully!\"\r\nelse\r\n    echo -e \"requirements.txt not found, skipping dependency installation\"\r\nfi\r\n\r\necho -e \"Installation complete!\"\r\necho -e \"Don't forget to set your DISCORD_BOT_TOKEN in the Startup tab!\"",
+            "container": "ghcr.io\/parkervcp\/installers:debian",
+            "entrypoint": "bash"
+        }
+    },
+    "variables": [
+        {
+            "name": "Discord Bot Token",
+            "description": "Le token de votre bot Discord. Obtenez-le sur https:\/\/discord.com\/developers\/applications",
+            "env_variable": "DISCORD_BOT_TOKEN",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Git Repository Address",
+            "description": "Adresse du d\u00e9p\u00f4t GitHub (sans https:\/\/)",
+            "env_variable": "GIT_ADDRESS",
+            "default_value": "github.com\/LHRICO78\/discord-music-bot-yt.git",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Git Username",
+            "description": "Nom d'utilisateur GitHub (optionnel, pour les d\u00e9p\u00f4ts priv\u00e9s)",
+            "env_variable": "USERNAME",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Git Access Token",
+            "description": "Token d'acc\u00e8s GitHub (optionnel, pour les d\u00e9p\u00f4ts priv\u00e9s)",
+            "env_variable": "ACCESS_TOKEN",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Auto Update",
+            "description": "Mettre \u00e0 jour automatiquement depuis GitHub au d\u00e9marrage (1 = oui, 0 = non)",
+            "env_variable": "AUTO_UPDATE",
+            "default_value": "1",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|boolean",
+            "field_type": "text"
+        },
+        {
+            "name": "User Upload",
+            "description": "Ignorer le clonage Git et utiliser les fichiers upload\u00e9s (true\/false)",
+            "env_variable": "USER_UPLOAD",
+            "default_value": "false",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|in:true,false",
+            "field_type": "text"
+        }
+    ]
+}
+
