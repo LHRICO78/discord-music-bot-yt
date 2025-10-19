@@ -13,7 +13,7 @@ Un bot Discord avancé pour lire de la musique YouTube dans les salons vocaux av
 - 👤 **Demandeur affiché** - Voir qui a demandé chaque musique
 - 🔊 **Salon vocal affiché** - Information sur le salon vocal connecté
 - ❤️ **Système de likes** - Les utilisateurs peuvent liker les musiques en cours
-- 🎮 **Contrôles interactifs** - Boutons Discord pour Resume, Skip, Stop et Like
+- 🎮 **Contrôles interactifs** - Boutons Discord pour Pause, Resume, Skip, Stop et Like
 - 🔊 **Contrôle du volume** - Ajustement de 0 à 100%
 - 🎯 **Commandes simples** - Préfixe `!` pour toutes les commandes
 
@@ -127,7 +127,8 @@ python bot.py
 
 Lorsqu'une musique est en cours de lecture, un message enrichi s'affiche avec les boutons suivants:
 
-- **▶️ Resume** - Reprend la lecture si elle est en pause
+- **⏸️ Pause** - Met la musique en pause
+- **▶️ Resume** - Reprend la lecture après une pause
 - **⏭️ Skip** - Passe à la musique suivante
 - **⏹️ Stop** - Arrête la lecture et vide la file d'attente
 - **❤️ Like** - Like la musique en cours (toggle)

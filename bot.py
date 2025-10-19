@@ -108,6 +108,14 @@ class MusicControlView(discord.ui.View):
         self.ctx = ctx
         self.player_manager = player_manager
         
+    @discord.ui.button(label='Pause', style=discord.ButtonStyle.blurple, emoji='⏸️')
+    async def pause_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if self.ctx.voice_client and self.ctx.voice_client.is_playing():
+            self.ctx.voice_client.pause()
+            await interaction.response.send_message("⏸️ Musique mise en pause", ephemeral=True)
+        else:
+            await interaction.response.send_message("❌ Aucune musique n'est en cours de lecture", ephemeral=True)
+    
     @discord.ui.button(label='Resume', style=discord.ButtonStyle.green, emoji='▶️')
     async def resume_button(self, interaction: discord.Interaction, button: discord.ui.Button):
         if self.ctx.voice_client and self.ctx.voice_client.is_paused():
