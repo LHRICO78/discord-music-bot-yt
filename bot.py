@@ -146,10 +146,18 @@ class MusicControlView(discord.ui.View):
         user_id = interaction.user.id
         if user_id in self.player_manager.likes:
             self.player_manager.likes.remove(user_id)
-            await interaction.response.send_message("💔 Like retiré", ephemeral=True)
+            message = "💔 Like retiré"
         else:
             self.player_manager.likes.add(user_id)
-            await interaction.response.send_message("❤️ Musique likée!", ephemeral=True)
+            message = "❤️ Musique likée!"
+        
+        # Mettre à jour l'embed avec le nouveau nombre de likes
+        if self.player_manager.current and self.ctx.voice_client:
+            embed = await create_now_playing_embed(self.ctx, self.player_manager.current, self.player_manager.requester, self.player_manager)
+            await interaction.response.edit_message(embed=embed, view=self)
+            await interaction.followup.send(message, ephemeral=True)
+        else:
+            await interaction.response.send_message(message, ephemeral=True)
 
 
 async def create_now_playing_embed(ctx, player, requester, player_manager):
