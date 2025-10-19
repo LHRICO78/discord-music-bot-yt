@@ -68,6 +68,7 @@ class MusicPlayer:
         self.requester = None
         self.likes = set()
         self.start_time = None
+        self.volume = 50  # Volume par défaut à 50%
         
     def add_to_queue(self, player, requester):
         self.queue.append({'player': player, 'requester': requester})
@@ -141,7 +142,35 @@ class MusicControlView(discord.ui.View):
         else:
             await interaction.response.send_message("❌ Le bot n'est pas dans un salon vocal", ephemeral=True)
     
-    @discord.ui.button(label='Like', style=discord.ButtonStyle.gray, emoji='❤️')
+    @discord.ui.button(label='Vol -', style=discord.ButtonStyle.gray, emoji='🔉', row=1)
+    async def volume_down_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if self.ctx.voice_client and self.ctx.voice_client.source:
+            new_volume = max(0, self.player_manager.volume - 10)
+            self.player_manager.volume = new_volume
+            self.ctx.voice_client.source.volume = new_volume / 100
+            
+            # Mettre à jour l'embed
+            embed = await create_now_playing_embed(self.ctx, self.player_manager.current, self.player_manager.requester, self.player_manager)
+            await interaction.response.edit_message(embed=embed, view=self)
+            await interaction.followup.send(f"🔉 Volume: {new_volume}%", ephemeral=True)
+        else:
+            await interaction.response.send_message("❌ Aucune musique n'est en cours", ephemeral=True)
+    
+    @discord.ui.button(label='Vol +', style=discord.ButtonStyle.gray, emoji='🔊', row=1)
+    async def volume_up_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if self.ctx.voice_client and self.ctx.voice_client.source:
+            new_volume = min(100, self.player_manager.volume + 10)
+            self.player_manager.volume = new_volume
+            self.ctx.voice_client.source.volume = new_volume / 100
+            
+            # Mettre à jour l'embed
+            embed = await create_now_playing_embed(self.ctx, self.player_manager.current, self.player_manager.requester, self.player_manager)
+            await interaction.response.edit_message(embed=embed, view=self)
+            await interaction.followup.send(f"🔊 Volume: {new_volume}%", ephemeral=True)
+        else:
+            await interaction.response.send_message("❌ Aucune musique n'est en cours", ephemeral=True)
+    
+    @discord.ui.button(label='Like', style=discord.ButtonStyle.gray, emoji='❤️', row=1)
     async def like_button(self, interaction: discord.Interaction, button: discord.ui.Button):
         user_id = interaction.user.id
         if user_id in self.player_manager.likes:
@@ -195,6 +224,13 @@ async def create_now_playing_embed(ctx, player, requester, player_manager):
     embed.add_field(
         name="Likes",
         value=f"❤️ {likes_count}",
+        inline=True
+    )
+    
+    # Volume
+    embed.add_field(
+        name="Volume",
+        value=f"🔊 {player_manager.volume}%",
         inline=True
     )
     
@@ -309,6 +345,9 @@ async def play_next(ctx):
                 print(f'Erreur dans after_playing: {e}')
         
         ctx.voice_client.play(player, after=after_playing)
+        # Appliquer le volume
+        if ctx.voice_client.source:
+            ctx.voice_client.source.volume = player_manager.volume / 100
         player_manager.start_time = asyncio.get_event_loop().time()
         
         # Créer l'embed et les boutons
@@ -410,7 +449,10 @@ async def volume(ctx, volume: int):
         return await ctx.send("❌ Le bot n'est pas connecté à un salon vocal")
 
     if 0 <= volume <= 100:
-        ctx.voice_client.source.volume = volume / 100
+        player_manager = get_music_player(ctx.guild.id)
+        player_manager.volume = volume
+        if ctx.voice_client.source:
+            ctx.voice_client.source.volume = volume / 100
         await ctx.send(f"🔊 Volume réglé à {volume}%")
     else:
         await ctx.send("❌ Le volume doit être entre 0 et 100")
