@@ -7,7 +7,7 @@
     "exported_at": "2025-10-18T00:00:00+00:00",
     "name": "Discord Music Bot",
     "author": "discord@bot.com",
-    "description": "Un bot Discord avanc\u00e9 pour lire de la musique YouTube dans les salons vocaux avec interface interactive enrichie, mise \u00e0 jour automatique de yt-dlp, syst\u00e8me de likes et AutoPlay.",
+    "description": "Un bot Discord avancé pour lire de la musique YouTube dans les salons vocaux avec interface interactive enrichie, mise à jour automatique de yt-dlp et système de likes.",
     "features": [
         "eula"
     ],

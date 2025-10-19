@@ -66,7 +66,6 @@ class MusicPlayer:
         self.current = None
         self.current_message = None
         self.requester = None
-        self.autoplay = False
         self.likes = set()
         self.start_time = None
         
@@ -134,14 +133,6 @@ class MusicControlView(discord.ui.View):
         else:
             await interaction.response.send_message("❌ Le bot n'est pas dans un salon vocal", ephemeral=True)
     
-    @discord.ui.button(label='AutoPlay', style=discord.ButtonStyle.gray, emoji='🔄')
-    async def autoplay_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-        self.player_manager.autoplay = not self.player_manager.autoplay
-        status = "activé" if self.player_manager.autoplay else "désactivé"
-        button.style = discord.ButtonStyle.blurple if self.player_manager.autoplay else discord.ButtonStyle.gray
-        await interaction.response.edit_message(view=self)
-        await interaction.followup.send(f"🔄 AutoPlay {status}", ephemeral=True)
-    
     @discord.ui.button(label='Like', style=discord.ButtonStyle.gray, emoji='❤️')
     async def like_button(self, interaction: discord.Interaction, button: discord.ui.Button):
         user_id = interaction.user.id
@@ -188,14 +179,6 @@ async def create_now_playing_embed(ctx, player, requester, player_manager):
     embed.add_field(
         name="Likes",
         value=f"❤️ {likes_count}",
-        inline=True
-    )
-    
-    # AutoPlay status
-    autoplay_status = "✅ Activé" if player_manager.autoplay else "❌ Désactivé"
-    embed.add_field(
-        name="AutoPlay",
-        value=autoplay_status,
         inline=True
     )
     
@@ -325,12 +308,6 @@ async def play_next(ctx):
         
         # Envoyer le nouveau message
         player_manager.current_message = await ctx.send(embed=embed, view=view)
-    
-    elif player_manager.autoplay and player_manager.current:
-        # Si AutoPlay est activé, chercher une musique similaire
-        await ctx.send("🔄 AutoPlay activé - Recherche d'une musique similaire...")
-        # Note: Cette fonctionnalité nécessiterait une API pour recommander des musiques
-        # Pour l'instant, on arrête simplement la lecture
 
 
 @bot.command(name='pause', help='Met en pause la musique')
@@ -421,14 +398,6 @@ async def volume(ctx, volume: int):
         await ctx.send(f"🔊 Volume réglé à {volume}%")
     else:
         await ctx.send("❌ Le volume doit être entre 0 et 100")
-
-
-@bot.command(name='autoplay', help='Active/désactive l\'AutoPlay')
-async def toggle_autoplay(ctx):
-    player_manager = get_music_player(ctx.guild.id)
-    player_manager.autoplay = not player_manager.autoplay
-    status = "activé" if player_manager.autoplay else "désactivé"
-    await ctx.send(f"🔄 AutoPlay {status}")
 
 
 @bot.command(name='nowplaying', aliases=['np'], help='Affiche la musique en cours')

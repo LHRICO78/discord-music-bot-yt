@@ -129,7 +129,6 @@ Une fois le bot démarré, il est prêt à être utilisé sur Discord!
 - `!stop` - Arrêter et vider la file
 - `!queue` - Voir la file d'attente
 - `!volume <0-100>` - Changer le volume
-- `!autoplay` - Activer/désactiver AutoPlay
 - `!nowplaying` ou `!np` - Afficher la musique en cours
 - `!ytdlp` - Voir la version de yt-dlp
 - `!leave` - Quitter le salon vocal

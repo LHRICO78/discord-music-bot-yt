@@ -13,8 +13,7 @@ Un bot Discord avancé pour lire de la musique YouTube dans les salons vocaux av
 - 👤 **Demandeur affiché** - Voir qui a demandé chaque musique
 - 🔊 **Salon vocal affiché** - Information sur le salon vocal connecté
 - ❤️ **Système de likes** - Les utilisateurs peuvent liker les musiques en cours
-- 🔄 **AutoPlay** - Lecture automatique continue (peut être activé/désactivé)
-- 🎮 **Contrôles interactifs** - Boutons Discord pour Resume, Skip, Stop, AutoPlay et Like
+- 🎮 **Contrôles interactifs** - Boutons Discord pour Resume, Skip, Stop et Like
 - 🔊 **Contrôle du volume** - Ajustement de 0 à 100%
 - 🎯 **Commandes simples** - Préfixe `!` pour toutes les commandes
 
@@ -121,7 +120,7 @@ python bot.py
 | `!leave` | Fait quitter le bot du salon vocal | `!leave` |
 | `!queue` | Affiche la file d'attente | `!queue` |
 | `!volume <0-100>` | Change le volume | `!volume 50` |
-| `!autoplay` | Active/désactive l'AutoPlay | `!autoplay` |
+
 | `!nowplaying` ou `!np` | Affiche la musique en cours | `!np` |
 
 ### Boutons interactifs
@@ -131,7 +130,6 @@ Lorsqu'une musique est en cours de lecture, un message enrichi s'affiche avec le
 - **▶️ Resume** - Reprend la lecture si elle est en pause
 - **⏭️ Skip** - Passe à la musique suivante
 - **⏹️ Stop** - Arrête la lecture et vide la file d'attente
-- **🔄 AutoPlay** - Active/désactive la lecture automatique continue
 - **❤️ Like** - Like la musique en cours (toggle)
 
 ### Affichage enrichi
@@ -141,7 +139,6 @@ Chaque musique en cours affiche:
 - 👤 **Demandeur** - L'utilisateur qui a demandé la musique
 - 🔊 **Salon vocal** - Le nom du salon vocal connecté
 - ❤️ **Nombre de likes** - Combien d'utilisateurs ont liké
-- 🔄 **Statut AutoPlay** - Si l'AutoPlay est activé ou non
 - 🖼️ **Miniature** - Image de la vidéo YouTube
 - 🔗 **Lien YouTube** - Lien direct vers la vidéo
 
@@ -152,8 +149,7 @@ Chaque musique en cours affiche:
 3. Tapez `!play despacito` pour jouer une musique
 4. Un message enrichi s'affiche avec toutes les informations et les boutons de contrôle
 5. Cliquez sur **❤️ Like** pour liker la musique
-6. Cliquez sur **🔄 AutoPlay** pour activer la lecture continue
-7. Utilisez les boutons ou les commandes pour contrôler la lecture
+6. Utilisez les boutons ou les commandes pour contrôler la lecture
 8. Tapez `!queue` pour voir les musiques en attente
 9. Tapez `!leave` pour déconnecter le bot
 
@@ -172,7 +168,6 @@ Chaque musique en cours affiche:
 - Ne partagez jamais votre token Discord publiquement
 - Le bot utilise le streaming pour éviter de télécharger les fichiers
 - Les boutons interactifs nécessitent discord.py version 2.0 ou supérieure
-- L'AutoPlay est une fonctionnalité de base (peut être améliorée avec une API de recommandations)
 
 ## 🎨 Captures d'écran
 
@@ -182,7 +177,6 @@ Le bot affiche un embed Discord enrichi avec:
 - Informations sur le demandeur
 - Salon vocal connecté
 - Nombre de likes
-- Statut AutoPlay
 - Boutons interactifs pour contrôler la lecture
 
 ## 🤝 Contribution
@@ -206,7 +200,6 @@ Pour toute question ou problème, ouvrez une issue sur GitHub.
 
 ## 🚀 Améliorations futures possibles
 
-- Intégration d'une API de recommandations pour l'AutoPlay
 - Sauvegarde des musiques likées dans une base de données
 - Playlists personnalisées par utilisateur
 - Égaliseur audio
